@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -7,13 +8,17 @@ public struct Vec3  {
 
     public float x, y, z;
 
-    public static readonly Vec3 Zero = new Vec3(); 
+    public static readonly Vec3 zero = new Vec3(); 
 
     public readonly Vec3 normalized { get { var mag = magnitude;  return new Vec3(x/mag, y/mag, z/mag); } }
     public readonly float magnitude { get { return Mathf.Sqrt(x * x + y * y + z * z); } }
 
     public Vec3(float x, float y, float z) {
         this.x = x; this.y = y; this.z = z;
+    }
+
+    public static Vec3 Cross(Vec3 a, Vec3 b) {
+        return new Vec3(a.y * b.z - a.z * b.y, a.x * b.z - a.x * b.z, a.x * b.y - a.x * b.y);
     }
 
     public static Vec3 operator *(Vec3 vector, float scalar) {
@@ -38,6 +43,10 @@ public struct Vec3  {
 
     public static bool operator !=(Vec3 vector1, Vec3 vector2) {
         return vector1.x != vector2.x || vector1.y != vector2.y || vector1.z != vector2.z;
+    }
+
+    public static Vec3 operator /(Vec3 vec3, float division) {
+        return new Vec3(vec3.x / division, vec3.y / division, vec3.z / division);
     }
 
     public override int GetHashCode() {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,36 @@ public struct MyQuaternion {
         rotation.x = x; rotation.y = y; rotation.z = z; rotation.w = w;
     }
 
-    public static MyQuaternion RotationAroundAxis(Vec3 axis, float radians) {
+    public MyQuaternion(Vec4 rotation) {
+        this.rotation = rotation;
+    }
+
+
+    public static MyQuaternion RotateAroundAxis(Vec3 axis, float radians) {
+        if (axis == Vec3.zero) { return identity; }
         MyQuaternion result = new MyQuaternion();
+        radians /= 2;
         axis = Mathf.Sin(radians) * axis.normalized;
         result.rotation = new Vec4(axis.x, axis.y, axis.z, Mathf.Cos(radians));
         return result;
+    }
+
+    public static MyQuaternion RotateTowards(MyQuaternion from, MyQuaternion to, float maxRadians) {
+        float angle = RadianAngle(from, to);
+        if (angle == 0) {
+            return to;
+        }
+        return Slerp(from, to, Math.Clamp(maxRadians / angle, 0, 1), angle); 
+    }
+
+    private static MyQuaternion Slerp(MyQuaternion from, MyQuaternion to, float lerp, float angle) {
+        MyQuaternion result = new MyQuaternion((1 - lerp) * from.rotation.normalized + lerp * to.rotation.normalized);
+        result.rotation = result.rotation.normalized;
+        return result;
+    }
+
+    public static float RadianAngle(MyQuaternion a, MyQuaternion b) {
+        return Mathf.Acos(Mathf.Min(Mathf.Abs(Vec4.Dot(a.rotation, b.rotation)), 1)) * 2f;
     }
 
     public Vec3 RotateVector(Vec3 vector) {
