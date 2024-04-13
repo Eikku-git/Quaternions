@@ -38,6 +38,7 @@ public class MyTransform {
         } 
     }
     private Vec3 scaleInternal;
+
     public MyQuaternion rotation { 
         get { return rotationInternal; } 
         set { 
@@ -48,6 +49,12 @@ public class MyTransform {
         } 
     }
     private MyQuaternion rotationInternal;
+
+    private Vec4 localIdentityRotation {
+        get {
+            return new Vec4(unityTransform.rotation.x, unityTransform.rotation.y, unityTransform.rotation.z, unityTransform.rotation.w);
+        }
+    }
 
     public MyTransform(Transform unityTransform) { 
         scale = new Vec3(1, 1, 1);
