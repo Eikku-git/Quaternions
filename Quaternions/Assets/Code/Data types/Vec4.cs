@@ -39,7 +39,12 @@ public struct Vec4 {
     public static implicit operator Vec3 (Vec4 vec4) {
         return new Vec3(vec4.x, vec4.y, vec4.z);
     }
-    public static implicit operator Vec4(Vec3 vec3) {
+
+    public static implicit operator Vec4 (Vec3 vec3) {
         return new Vec4(vec3.x, vec3.y, vec3.z, 0);
+    }
+
+    public static implicit operator Vec4 (Vector4 vector4) {
+        return new Vec4(vector4.x, vector4.y, vector4.z, vector4.w);
     }
 }

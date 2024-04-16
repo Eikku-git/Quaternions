@@ -32,10 +32,10 @@ public struct MyQuaternion {
         if (angle == 0) {
             return to;
         }
-        return Slerp(from, to, Math.Clamp(maxRadians / angle, 0, 1), angle); 
+        return Slerp(from, to, Math.Clamp(maxRadians / angle, 0, 1)); 
     }
 
-    private static MyQuaternion Slerp(MyQuaternion from, MyQuaternion to, float lerp, float angle) {
+    private static MyQuaternion Slerp(MyQuaternion from, MyQuaternion to, float lerp) {
         MyQuaternion result = new MyQuaternion((1 - lerp) * from.rotation.normalized + lerp * to.rotation.normalized);
         result.rotation = result.rotation.normalized;
         return result;
